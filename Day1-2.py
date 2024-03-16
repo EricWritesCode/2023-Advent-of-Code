@@ -1,29 +1,36 @@
 import re
 
+
 def main():
     with open("Day1-Data.txt", "r") as file:
         data: list[str] = file.readlines()
-    
+
     final_total: int = 0
     line_count: int = 0
 
-    #Build a list of valid numbers to search for
-    valid_numbers: list[str] = [ 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
-    i: int = 1
-    while i < 10:
-        valid_numbers.append(str(i))
-        i += 1
-    #Dict for converting from words to numerals
+    # Build a list of valid numbers to search for
+    valid_numbers: list[str] = [str(num) for num in range(1, 10)] + [
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+    ]
+    # Dict for converting from words to numerals
     conversion_list: dict[str, str] = {
-        'one': '1',
-        'two': '2',
-        'three': '3',
-        'four': '4',
-        'five': '5',
-        'six': '6',
-        'seven': '7',
-        'eight': '8',
-        'nine': '9',
+        "one": "1",
+        "two": "2",
+        "three": "3",
+        "four": "4",
+        "five": "5",
+        "six": "6",
+        "seven": "7",
+        "eight": "8",
+        "nine": "9",
     }
 
     for item in data:
@@ -45,15 +52,15 @@ def main():
         for entry in line_set:
             i_v_pair = str(entry).split("|")
             if i_v_pair[1] in conversion_list:
-                i_v_pair[1] = conversion_list.get(i_v_pair[1])
-            i_v_pair[0] = int(i_v_pair[0])
-            final_values.append(i_v_pair)
+                i_v_pair[1] = str(conversion_list.get(i_v_pair[1]))
+            int_index = int(i_v_pair[0])
+            final_values.append([int_index, i_v_pair[1]])
 
         # Sort final values by index
         final_values = sorted(final_values)
 
         first: str = final_values[0][1]
-        last: str = final_values[len(final_values)-1][1]
+        last: str = final_values[len(final_values) - 1][1]
 
         row_value = first + last
         final_total += int(row_value)
@@ -62,5 +69,6 @@ def main():
         print(f"New total: {final_total}")
 
     print(f"Final total: {final_total}")
+
 
 main()
