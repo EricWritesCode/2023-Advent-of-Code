@@ -2,17 +2,19 @@ import re
 
 def main():
     with open("Day1-Data.txt", "r") as file:
-        data = file.read()
-        finalData = data.split("\n")
+        data: list[str] = file.readlines()
     
-    finalTotal: int = 0
-    lineCount: int = 0
-    validNumbers = [ 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
-    i = 1
+    final_total: int = 0
+    line_count: int = 0
+
+    #Build a list of valid numbers to search for
+    valid_numbers: list[str] = [ 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+    i: int = 1
     while i < 10:
-        validNumbers.append(str(i))
+        valid_numbers.append(str(i))
         i += 1
-    conversionList = {
+    #Dict for converting from words to numerals
+    conversion_list: dict[str, str] = {
         'one': '1',
         'two': '2',
         'three': '3',
@@ -24,41 +26,41 @@ def main():
         'nine': '9',
     }
 
-    for item in finalData:
-        lineCount += 1
-        lineSet = set()
-        finalValues = []
-        
-        for num in validNumbers:
+    for item in data:
+        line_count += 1
+        line_set = set()
+        final_values: list = []
+
+        for num in valid_numbers:
             # Check line for number
             index = item.find(num)
             if index != -1:
-                lineSet.add(f"{index}|{num}")
+                line_set.add(f"{index}|{num}")
             # Check in reverse
             rindex = item.rfind(num)
             if rindex != -1:
-                lineSet.add(f"{rindex}|{num}")
+                line_set.add(f"{rindex}|{num}")
 
-        # Break up the set and convert word numbers to ints
-        for entry in lineSet:
-            indexValuePair = str(entry).split("|")
-            if indexValuePair[1] in conversionList:
-                indexValuePair[1] = conversionList.get(indexValuePair[1])
-            indexValuePair[0] = int(indexValuePair[0])
-            finalValues.append(indexValuePair)
+        # Break up the set into index/value pairs and convert word numbers to ints
+        for entry in line_set:
+            i_v_pair = str(entry).split("|")
+            if i_v_pair[1] in conversion_list:
+                i_v_pair[1] = conversion_list.get(i_v_pair[1])
+            i_v_pair[0] = int(i_v_pair[0])
+            final_values.append(i_v_pair)
 
         # Sort final values by index
-        finalValues = sorted(finalValues)
+        final_values = sorted(final_values)
 
-        first = finalValues[0][1]
-        last = finalValues[len(finalValues)-1][1]
+        first: str = final_values[0][1]
+        last: str = final_values[len(final_values)-1][1]
 
-        rowValue = str(first) + str(last)
-        finalTotal += int(rowValue)
+        row_value = first + last
+        final_total += int(row_value)
 
-        print(f"[{lineCount}] {item}: {lineSet} ({finalValues}) Row: {rowValue}")
-        print(f"New total: {finalTotal}")
+        print(f"[{line_count}] {item}: {line_set} ({final_values}) Row: {row_value}")
+        print(f"New total: {final_total}")
 
-    print(f"Final total: {finalTotal}")
+    print(f"Final total: {final_total}")
 
 main()
